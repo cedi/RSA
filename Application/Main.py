@@ -28,13 +28,19 @@ while True:
         keys = Keygen.keygen()
 
         print("*** Keypairs ***")
-        print("- Private Key:   (N={},e={})".format(keys.private.RSA,
+        print("- Private Key:   (N={},d={})".format(keys.private.RSA,
                                                     keys.private.exponent))
-        print("- Public Key:    (N={},d={})".format(keys.public.RSA,
+        print("- Public Key:    (N={},e={})".format(keys.public.RSA,
                                                     keys.public.exponent))
 
     elif userIn == 2 or userIn == 3:
-        Key = RSAInputParser.InputParser(input("Please enter RSA-Key: "))
+        question = str()
+        if(userIn == 2):
+            question = "Please enter public key: "
+        else:
+            question = "Please enter private key: "
+
+        Key = RSAInputParser.InputParser(input(question))
 
         if userIn == 2:
             message = input("Please enter the plaintext message: ")
