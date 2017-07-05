@@ -1,33 +1,56 @@
 from binascii import hexlify
 
 
-def encrypt(RSA, exponent, plaintext):
+def encrypt(RSA, exponent, plainText):
 
     cipperText = str()
 
-    # Character by character
-    for index in range(len(plaintext)):
-        plainChar = plaintext[index]
+    # Zeichen für Zeichen
+    for plainChar in plainText:
+        # Als Binärdaten encodieren
+        encodedChar = plainChar.encode()
 
-        # ascii = ord(plainChar)
-        plainChar = int(hexlify(plainChar.encode()), 16)
+        # In Hexadezimal-Zahl umwandeln
+        hexChar = hexlify(encodedChar)
+
+        # Hex-Wert in int-Wert darstellen
+        plainChar = int(hexChar, 16)
+
+        # Verschlüsselungsvorgang
         cipperChar = plainChar ** exponent % RSA
 
-        cipperText = "{}:{}".format(cipperText, hex(cipperChar)[2:])
+        # Zahl wieder in Hex umwandeln
+        cipperChar = hex(cipperChar)
 
+        # das "0x" vom Hex abschneiden
+        cipperChar = cipperChar[2:]
+
+        # und nun noch anhängen
+        cipperText = "{}:{}".format(cipperText, cipperChar)
+
+    # erster Doppelpunkt abschneiden und String zurückgeben
     return cipperText[1:]
 
 
-def decrypt(RSA, exponent, cippertext):
+def decrypt(RSA, exponent, cipperText):
 
     plainText = str()
-    cipper = cippertext.split(":")
 
-    # Character by character
-    for cipperChar in cipper:
-        plainChar = int(cipperChar, 16) ** exponent % RSA
+    # String an den Doppelpunkten wieder aufsplitten
+    cipperArray = cipperText.split(":")
+
+    # Zeichen für Zeichen
+    for cipperChar in cipperArray:
+        # Aus dem Hex-String wieder eine Zahl machen
+        cipperChar = int(cipperChar, 16)
+
+        # Entschlüsseln
+        plainChar = cipperChar ** exponent % RSA
+
+        # und wieder ein Zeichen daraus machen
         plainChar = chr(plainChar)
 
+        # un nun noch anhängen
         plainText = "{}{}".format(plainText, plainChar)
 
     return plainText

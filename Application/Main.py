@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import Keygen
 import Crypt
 import RSAInputParser
